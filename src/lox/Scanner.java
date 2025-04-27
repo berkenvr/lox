@@ -39,7 +39,26 @@ class Scanner {
             case ';': addToken(SEMICOLON); break;
             case '/': addToken(SLASH); break;
             case '*': addToken(STAR); break;
-            case ' ': break; // Ignore whitespace
+
+            case '!':
+                addToken(match('=') ? BANG_EQUAL : BANG);
+                break;
+            case '=':
+                addToken(match('=') ? EQUAL_EQUAL: EQUAL);
+                break;
+            case '>':
+                addToken(match('=') ? GREATER_EQUAL : GREATER);
+                break;
+            case '<':
+                addToken(match('=') ? LESS_EQUAL : LESS);
+                break;
+
+            // Ignore whitespace
+            case ' ':
+            case '\r':
+            case '\t':
+                break;
+
             default: addToken(UNKNOWN); break;
         }
     }
@@ -50,6 +69,18 @@ class Scanner {
 
     private char advance() {
         return source.charAt(current++);
+    }
+
+    private boolean match(char expected) {
+        if (isAtEnd()) {
+            return false;
+        }
+        if (source.charAt(current) != expected) {
+            return false;
+        }
+
+        current++; // skip next character if it is expected
+        return true;
     }
 
     private void addToken(TokenType type) {

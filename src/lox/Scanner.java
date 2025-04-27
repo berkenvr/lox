@@ -10,6 +10,7 @@ class Scanner {
     private final List<Token> tokens = new ArrayList<>();
     private int start = 0;
     private int current = 0;
+    private int line = 1;
 
     Scanner(String source) {
         this.source = source;
@@ -21,7 +22,7 @@ class Scanner {
 
         scanToken();
         }
-        tokens.add(new Token(EOF));
+        tokens.add(new Token(EOF, line));
         return tokens;
     }
 
@@ -59,6 +60,10 @@ class Scanner {
             case '\t':
                 break;
 
+            case '\n':
+                line++;
+                break;
+
             default: addToken(UNKNOWN); break;
         }
     }
@@ -84,6 +89,6 @@ class Scanner {
     }
 
     private void addToken(TokenType type) {
-        tokens.add(new Token(type));
+        tokens.add(new Token(type, line));
     }
 }

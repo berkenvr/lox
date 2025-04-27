@@ -2,12 +2,14 @@ package lox;
 
 class Token {
     TokenType type;
+    final int line;
 
-    Token(TokenType type) {
+    Token(TokenType type, int line) {
         this.type = type;
+        this.line = line;
     }
 
     public String toString() {
-        return type + " ";
+        return line + " " + type + " ";
     }
 }

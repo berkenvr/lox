@@ -19,7 +19,7 @@ compile:
 	javac -d $(CLASS_DIR) $(SOURCES)
 
 run: compile
-	@java -cp $(CLASS_DIR) $(PKG).Lox
+	@java -cp $(CLASS_DIR) $(PKG).Lox $(ARGS)
 
 clean:
 	$(RM)

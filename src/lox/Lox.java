@@ -3,14 +3,11 @@ package lox;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.List;
 
 public class Lox {
     public static void main(String[] args) throws IOException {
-        if(args.length > 1){
-            System.out.println("Usage: jlox [script]");
-        } else {
-            runPrompt();
-        }      
+        runPrompt();
     }
     
     private static void runPrompt() throws  IOException {
@@ -28,7 +25,10 @@ public class Lox {
     }
 
     private static void run(String source) {
-        // just printing source for now
-        System.out.println(source);
+        Scanner scanner = new Scanner(source);
+        List<Token> tokens = scanner.scanTokens();
+        for (Token token : tokens) {
+            System.out.println(token);
+        }
     }
 }

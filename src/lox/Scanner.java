@@ -64,8 +64,47 @@ class Scanner {
                 line++;
                 break;
 
-            default: addToken(UNKNOWN); break;
+            case '"': string(); break;
+            default:
+                if(isDigit(c)) {
+                    number();
+                } else {
+                    addToken(UNKNOWN);
+                }
+                break;
         }
+    }
+
+    private void string() {
+        while(peek() != '"' && !isAtEnd()) {
+            if(peek() == '\n') line++;
+            advance();
+        }
+
+        if(isAtEnd()) {
+            System.out.println("Unterminated String.");
+        }
+
+        advance(); // skip '"'
+
+        addToken(STRING);
+    }
+
+    private void number() {
+        // User can write a float number in multiple lines. Is it correct implementation?
+        while(isDigit(peek())) {
+            advance();
+        }
+
+        if(peek() == '.' && isDigit(peekNext())) {
+            advance(); // skip '.'
+
+            while(isDigit(peek())) {
+                advance();
+            }
+        }
+
+        addToken(NUMBER);
     }
 
     private boolean isAtEnd() {
@@ -86,6 +125,20 @@ class Scanner {
 
         current++; // skip next character if it is expected
         return true;
+    }
+
+    private char peek() {
+        if(isAtEnd()) return '\0';
+        return source.charAt(current);
+    }
+
+    private char peekNext() {
+        if(current + 1 > source.length()) return '\0';
+        return source.charAt(current + 1);
+    }
+
+    private boolean isDigit(char c) {
+        return c >= '0' && c <= '9';
     }
 
     private void addToken(TokenType type) {
